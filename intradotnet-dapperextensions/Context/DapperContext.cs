@@ -5,7 +5,12 @@ namespace IntraDotNet.DapperExtensions.Context
 {
     public abstract class DapperContext: IDapperContext
     {
-        private string _connectionString;
+        protected DapperContextOptions Options;
+
+        public DapperContext()
+        {
+            Options = new DapperContextOptions();
+        }
 
         public DapperContext(DapperContextOptions options)
         {
@@ -14,12 +19,7 @@ namespace IntraDotNet.DapperExtensions.Context
 
         public IDapperContext Configure(DapperContextOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _connectionString = options.ConnectionString;
+            Options = options ?? throw new ArgumentNullException(nameof(options));
 
             return this;
         }

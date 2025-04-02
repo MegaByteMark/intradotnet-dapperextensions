@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intradotnet-dapperextension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intradotnet-dapperextensions-tests", "intradotnet-dapperextensions-tests\intradotnet-dapperextensions-tests.csproj", "{C9B4ED7A-BF24-44A4-9E63-A96792656534}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intradotnet-dapperextensions-testapp", "intradotnet-dapperextensions-testapp\intradotnet-dapperextensions-testapp.csproj", "{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{C9B4ED7A-BF24-44A4-9E63-A96792656534}.Release|x64.Build.0 = Release|Any CPU
 		{C9B4ED7A-BF24-44A4-9E63-A96792656534}.Release|x86.ActiveCfg = Release|Any CPU
 		{C9B4ED7A-BF24-44A4-9E63-A96792656534}.Release|x86.Build.0 = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|x64.Build.0 = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B81DE4B-8F8B-4776-90DE-F8A21ADCE0B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
