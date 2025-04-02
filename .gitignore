@@ -398,3 +398,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+intradotnet-dapperextensions/bin
+intradotnet-dapperextensions/obj
+intradotnet-dapperextensions-tests/bin
+intradotnet-dapperextensions-tests/obj
