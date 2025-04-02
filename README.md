@@ -2,8 +2,8 @@
 Utility library for Dapper to improve the development experience of common Dapper scenarios.
 
 ## Initializing a Dependency Injectable Context Wrapper for Dapper
-To initialize a dependency injectable context wrapper for Dapper, first you need to create a context class that inherits froms `DapperContext`, then implement the `GetDbConnection` function.
-The following example uses a connection to an Sql Server database which requires installing either `System.Data.SqlClient` or `Microsoft.Data.SqlClient` depending on your target runtime, however you can use any database provider by installing the package relevant for that provider if the provider implements the .NET Data Provider schema. 
+First you need to create a context class that inherits from `DapperContext`, then implement the `GetDbConnection` function.
+The following example uses a connection to an Sql Server database which requires installing either `System.Data.SqlClient` or `Microsoft.Data.SqlClient` depending on your target runtime, however you can use any database provider by installing the package relevant for that provider, if the provider implements the .NET Data Provider schema. [.NET Data Providers](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/data-providers)
 
 ```csharp
 using System.Data.Common;
@@ -41,7 +41,7 @@ public class LocalSqlDapperContext : DapperContext
 }
 ```
 
-Then in your application startup register the DapperContext for DI by adding it to the services container. In the following example the connection string `LocalSql` is loaded from `appsettings.json`:
+Then in your application startup, register the DapperContext for DI by adding it to the services container. In the following example the connection string `LocalSql` is loaded from `appsettings.json`:
 
 ```csharp
 internal class Program
@@ -136,7 +136,7 @@ public sealed class Worker : IHostedService, IHostedLifecycleService
 }
 ```
 
-**IMPORTANT**: Remember the `DbConnection` is unmanaged resources and must be wrapped in a using to prevent memory leakage.
+**IMPORTANT**: Remember the `DbConnection` is unmanaged resources and must be wrapped in a `using` to prevent memory leakage.
 
 ## Contributing
 
