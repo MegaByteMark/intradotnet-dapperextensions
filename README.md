@@ -41,7 +41,10 @@ public class LocalSqlDapperContext : DapperContext
 }
 ```
 
-Then in your application startup, register the DapperContext for DI by adding it to the services container. In the following example the connection string `LocalSql` is loaded from `appsettings.json`:
+## Registering the Dapper Context in Dependency Injection
+
+You can register your Dapper context in two ways:  
+**1. Using a configuration action (like EF Core):**
 
 ```csharp
 internal class Program
@@ -63,6 +66,47 @@ internal class Program
     }
 }
 ```
+
+**2. Using appsettings.json and IOptions pattern:**
+
+Add your connection string to `appsettings.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "LocalSql": "your_connection_string"
+  },
+  "DapperContextOptions": {
+    "ConnectionString": "your_connection_string"
+  }
+}
+```
+
+Then register the context using the IOptions pattern:
+
+```csharp
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+        // Bind DapperContextOptions from configuration
+        builder.Services.Configure<DapperContextOptions>(builder.Configuration.GetSection("DapperContextOptions"));
+
+        // Register context using IOptions
+        builder.Services.AddDapperContext<ILocalSqlDapperContext, LocalSqlDapperContext>();
+
+        builder.Services.AddHostedService<Worker>();
+
+        IHost host = builder.Build();
+        host.Run();
+    }
+}
+```
+
+## Injecting and Using the Dapper Context
 
 Then dependency inject the DapperContext at the point it is required in your code:
 
@@ -136,7 +180,7 @@ public sealed class Worker : IHostedService, IHostedLifecycleService
 }
 ```
 
-**IMPORTANT**: Remember the `DbConnection` is unmanaged resources and must be wrapped in a `using` to prevent memory leakage.
+**IMPORTANT**: Remember the `DbConnection` is an unmanaged resource and must be wrapped in a `using` to prevent memory leakage.
 
 ## Contributing
 
