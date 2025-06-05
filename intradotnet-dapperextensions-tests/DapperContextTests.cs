@@ -2,33 +2,48 @@
 using IntraDotNet.DapperExtensions.Context;
 using IntraDotNet.DapperExtensions.Tests.Context;
 using Dapper;
+using System.Data.Common;
+using IntraDotNet.DapperExtensions.Tests.Fixtures;
+using IntraDotNet.DapperExtensions.Tests.Models;
 
 namespace IntraDotNet.DapperExtensions.Tests;
 
+[Collection("SqlServerTestCollection")]
 public class DapperContextTests
 {
+    private readonly SqlServerTestContainerFixture _fixture;
+
+    public DapperContextTests(SqlServerTestContainerFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
     public void ConnectToDbWithDapper_ConfigureAction_RunSelect()
     {
         // Arrange
-        var connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=reallyStrongPassword123;TrustServerCertificate=True;";
+        IServiceCollection services = new ServiceCollection();
 
-        var services = new ServiceCollection();
         services.AddDapperContext<ITestDbDapperContext, TestDbDapperContext>(options =>
         {
-            options.ConnectionString = connectionString;
+            options.ConnectionString = _fixture.ConnectionString;
         });
 
         // Act
-        var context = services.BuildServiceProvider().GetRequiredService<ITestDbDapperContext>();
+        using ServiceProvider serviceProvider = services.BuildServiceProvider();
+        ITestDbDapperContext context = serviceProvider.GetRequiredService<ITestDbDapperContext>();
+
         Assert.NotNull(context);
-        using (var connection = context.GetDbConnection())
+
+        using (DbConnection connection = context.GetDbConnection())
         {
             Assert.NotNull(connection);
-            var result = connection.Query("SELECT * FROM dbo.Category");
+
+            IEnumerable<Category> result = connection.Query<Category>(Category.GetQuery);
 
             // Assert
             Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
     }
 
@@ -36,27 +51,30 @@ public class DapperContextTests
     public void ConnectToDbWithDapper_IOptions_RunSelect()
     {
         // Arrange
-        var connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=reallyStrongPassword123;TrustServerCertificate=True;";
-
-        var services = new ServiceCollection();
+        IServiceCollection services = new ServiceCollection();
 
         services.Configure<DapperContextOptions>(options =>
         {
-            options.ConnectionString = connectionString;
+            options.ConnectionString = _fixture.ConnectionString;
         });
 
         services.AddDapperContext<ITestDbDapperContext, TestDbDapperContext>();
 
         // Act
-        var context = services.BuildServiceProvider().GetRequiredService<ITestDbDapperContext>();
+        using ServiceProvider serviceProvider = services.BuildServiceProvider();
+        ITestDbDapperContext context = serviceProvider.GetRequiredService<ITestDbDapperContext>();
+
         Assert.NotNull(context);
-        using (var connection = context.GetDbConnection())
+
+        using (DbConnection connection = context.GetDbConnection())
         {
             Assert.NotNull(connection);
-            var result = connection.Query("SELECT * FROM dbo.Category");
+
+            IEnumerable<Category> result = connection.Query<Category>(Category.GetQuery);
 
             // Assert
             Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
     }
 }
