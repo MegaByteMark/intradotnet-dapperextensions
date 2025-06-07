@@ -7,14 +7,15 @@
 
   <PropertyGroup>
     <PackageId>IntraDotNet.DapperExtensions</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>MegaByteMark</Authors>
     <Description>Utility library for Dapper Extensions to improve the development experience of common Dapper scenarios.</Description>
-    <PackageTags>dapper;orm;database;data-access;dotnet;extensions;utility;sql;netstandard;intradotnet;</PackageTags>
+    <PackageTags>dotnet;netstandard;netcore;netframework;dapper;orm;database;data-access;extensions;utility;sql;intradotnet</PackageTags>
     <RepositoryUrl>https://github.com/MegaByteMark/intradotnet-dapperextensions</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/MegaByteMark/intradotnet-dapperextensions</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyName>IntraDotNet.DapperExtensions</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
