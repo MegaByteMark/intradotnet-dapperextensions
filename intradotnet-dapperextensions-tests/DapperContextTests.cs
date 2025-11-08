@@ -5,6 +5,7 @@ using Dapper;
 using System.Data.Common;
 using IntraDotNet.DapperExtensions.Tests.Fixtures;
 using IntraDotNet.DapperExtensions.Tests.Models;
+using Microsoft.Data.SqlClient;
 
 namespace IntraDotNet.DapperExtensions.Tests;
 
@@ -76,5 +77,43 @@ public class DapperContextTests
             Assert.NotNull(result);
             Assert.NotEmpty(result);
         }
+    }
+
+    [Fact]
+    public void MultipleDapperContexts_DifferentConnectionStrings_CheckConnections()
+    {
+        // Arrange
+        IServiceCollection services = new ServiceCollection();
+
+        services.AddDapperContext<ITestDbDapperContext, TestDbDapperContext>(options =>
+        {
+            options.ConnectionString = _fixture.ConnectionString;
+        });
+
+        services.AddDapperContext<ISecondTestDbDapperContext, SecondTestDbDapperContext>(options =>
+        {
+            options.ConnectionString = _fixture.SecondConnectionString;
+        });
+
+        // Act
+        using ServiceProvider serviceProvider = services.BuildServiceProvider();
+
+        var testDbContext = serviceProvider.GetRequiredService<ITestDbDapperContext>();
+        var secondDbContext = serviceProvider.GetRequiredService<ISecondTestDbDapperContext>();
+
+        Assert.NotNull(testDbContext);
+        Assert.NotNull(secondDbContext);
+
+        using DbConnection testDbConnection = testDbContext.GetDbConnection();
+        using DbConnection otherDbConnection = secondDbContext.GetDbConnection();
+
+        var testConnStringBuilder = new SqlConnectionStringBuilder(testDbConnection.ConnectionString);
+        var otherConnStringBuilder = new SqlConnectionStringBuilder(otherDbConnection.ConnectionString);
+        var fixtureDbConnStringBuilder = new SqlConnectionStringBuilder(_fixture.ConnectionString);
+        var secondFixtureDbConnStringBuilder = new SqlConnectionStringBuilder(_fixture.SecondConnectionString);
+
+        // Assert
+        Assert.Equal(fixtureDbConnStringBuilder.DataSource, testConnStringBuilder.DataSource);
+        Assert.Equal(secondFixtureDbConnStringBuilder.DataSource, otherConnStringBuilder.DataSource);
     }
 }

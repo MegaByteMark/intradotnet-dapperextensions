@@ -10,7 +10,12 @@ namespace IntraDotNet.DapperExtensions.Tests.Fixtures;
 public class SqlServerTestContainerFixture : IAsyncLifetime
 {
     public MsSqlContainer? DbContainer { get; private set; }
+
+    public MsSqlContainer? SecondDbContainer { get; private set; }
+
     public string ConnectionString { get; private set; } = string.Empty;
+
+    public string SecondConnectionString { get; private set; } = string.Empty;
 
     public async Task InitializeAsync()
     {
@@ -26,6 +31,16 @@ public class SqlServerTestContainerFixture : IAsyncLifetime
 
         await DbContainer.StartAsync();
         ConnectionString = DbContainer.GetConnectionString();
+
+        SecondDbContainer = new MsSqlBuilder()
+            .WithPassword(password)
+            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithCleanUp(true)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("SQL Server is now ready for client connections."))
+            .Build();
+
+        await SecondDbContainer.StartAsync();
+        SecondConnectionString = SecondDbContainer.GetConnectionString();
 
         using SqlConnection connection = new SqlConnection(ConnectionString);
         await connection.OpenAsync();

@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <PackageId>IntraDotNet.DapperExtensions</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>MegaByteMark</Authors>
     <Description>Utility library for Dapper Extensions to improve the development experience of common Dapper scenarios.</Description>
     <PackageTags>dotnet;netstandard;netcore;netframework;dapper;orm;database;data-access;extensions;utility;sql;intradotnet</PackageTags>

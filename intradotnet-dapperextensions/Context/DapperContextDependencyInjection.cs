@@ -76,7 +76,8 @@ namespace IntraDotNet.DapperExtensions.Context
             if (services == null) throw new ArgumentNullException(nameof(services));
             if (configureOptions == null) throw new ArgumentNullException(nameof(configureOptions));
 
-            services.Configure(configureOptions);
+            string optionsName = typeof(TDapperContext).FullName;
+            services.Configure(optionsName, configureOptions);
             return AddDapperContextInternal<TIDapperContext, TDapperContext>(services);
         }
 
@@ -124,7 +125,6 @@ namespace IntraDotNet.DapperExtensions.Context
         /// <remarks>
         /// This method is used to register a Dapper context with dependency injection without any configuration.
         /// It provides a way to register the Dapper context with the service collection without explicitly configuring options.
-        /// </remarks>
         private static IServiceCollection AddDapperContextInternal<TIDapperContext, TDapperContext>(
             IServiceCollection services)
             where TDapperContext : class, IDapperContext, TIDapperContext, new()
@@ -137,7 +137,9 @@ namespace IntraDotNet.DapperExtensions.Context
                 // Retrieve the Dapper context options from the service provider.
                 // This assumes that the options have been configured previously.
                 // If the options are not configured, an exception will be thrown.
-                DapperContextOptions options = provider.GetRequiredService<IOptions<DapperContextOptions>>().Value;
+                string optionsName = typeof(TDapperContext).FullName;
+                var optionsSnapshot = provider.GetRequiredService<IOptionsSnapshot<DapperContextOptions>>();
+                DapperContextOptions options = optionsSnapshot.Get(optionsName);
                 ValidateOptions(options);
 
                 TDapperContext context = new TDapperContext();
